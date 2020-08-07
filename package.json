@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "axios": "^0.19.2",
+    "next": "^9.5.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "prettier": "^2.0.5",
+    "tslint-config-airbnb": "^5.11.2",
+    "tslint-react-hooks": "^2.2.2"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx}": [
+      "eslint -c .eslintrc --fix"
+    ],
+    "*.(js|html|css)": [
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
+}
