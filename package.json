@@ -1,16 +1,23 @@
 {
   "dependencies": {
+    "@types/react": "^16.9.45",
+    "@zeit/next-less": "^1.0.1",
+    "@zeit/next-sass": "^1.0.1",
     "axios": "^0.19.2",
+    "less": "^3.12.2",
     "next": "^9.5.1",
+    "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
+    "@types/node": "^14.0.27",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
     "prettier": "^2.0.5",
     "tslint-config-airbnb": "^5.11.2",
-    "tslint-react-hooks": "^2.2.2"
+    "tslint-react-hooks": "^2.2.2",
+    "typescript": "^3.9.7"
   },
   "lint-staged": {
     "src/**/*.{js,jsx}": [
