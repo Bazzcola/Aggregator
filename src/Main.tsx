@@ -1,5 +1,10 @@
-import { SearchCompany } from './ui/molecules/searchCompany';
+import React, { useState } from 'react';
+import { SearchCompany } from './ui/molecules/searchCompany/searchCompany';
+import { SearchEmployers } from './ui/molecules/searchEmployers/searchEmployers';
+
 export const Main = () => {
+  const [buttonLoader, setButtonLoader] = useState<boolean>(true);
+
   return (
     <div className="container">
       <div className="header">
@@ -8,7 +13,7 @@ export const Main = () => {
         </div>
       </div>
       <div className="content">
-        <SearchCompany />
+        {buttonLoader ? <SearchCompany /> : <SearchEmployers />}
       </div>
       <div className="footer">
         <div className="footer_wrapper">

@@ -1,20 +1,14 @@
 import axios from 'axios';
 
-export const searchCompanies = () => {
+export const totalCompanies = () => {
   return axios(
     'https://app.informer.md/api/public/search?page=1&per_page=100&company_name='
   ).then((response) => response.data);
 };
-export const totalCompanies = () => {
+export const showSearch = (name) => {
   return axios(
-    'https://app.informer.md/api/public/search?page=1&per_page=100&company_name='
-  ).then((response) => response.data.total_results);
-};
-
-export const showAllCompanies = () => {
-  return axios(
-    'https://app.informer.md/api/public/search?page=CURRENT_PAGE&company_name=INPUT_VALUE'
-  ).then((response) => response.data.data);
+    `https://app.informer.md/api/public/search?page=1&per_page=5&company_name=${name}`
+  ).then((response) => response.data);
 };
 
 export const profileCompany = () => {

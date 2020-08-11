@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { searchCompanies, totalCompanies } from '../../services/api';
+import { showSearch } from '../../../services/api';
 
-export const SearchCompany = () => {
-  const [allCompanies, setAllCompanies] = useState<string>('');
+export const SearchEmployers = () => {
+  const [allPeople, setAllPeople] = useState<string>('');
+  const [buttonLoader, setButtonLoader] = useState<boolean>(true);
 
   useEffect(() => {
     const getData = async () => {
-      const saveData = await totalCompanies();
-      setAllCompanies(saveData);
+      const saveData = await showSearch();
+      setAllPeople(saveData);
+      //   console.log(allPeople);
     };
     getData();
-  }, [allCompanies]);
+  }, [allPeople]);
 
   return (
     <div className="search">
       <input
         type="text"
-        className="searchInput"
-        placeholder={`Search from ${allCompanies} companies`}
+        className="searchInput2"
+        placeholder={`Search from ----- companies`}
       />
       <div className="search_review">
         <div className="search_title">
