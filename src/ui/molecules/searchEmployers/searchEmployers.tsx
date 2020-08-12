@@ -5,14 +5,14 @@ export const SearchEmployers = () => {
   const [allPeople, setAllPeople] = useState<string>('');
   const [buttonLoader, setButtonLoader] = useState<boolean>(true);
 
-  useEffect(() => {
-    const getData = async () => {
-      const saveData = await showSearch();
-      setAllPeople(saveData);
-      //   console.log(allPeople);
-    };
-    getData();
-  }, [allPeople]);
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const saveData = await showSearch();
+  //     setAllPeople(saveData);
+  //     //   console.log(allPeople);
+  //   };
+  //   getData();
+  // }, [allPeople]);
 
   return (
     <div className="search">

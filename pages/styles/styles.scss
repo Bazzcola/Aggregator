@@ -61,14 +61,8 @@ input::placeholder {
 }
 
 .footer {
-  position: absolute;
   bottom: 0px;
   left: 0px;
-  max-width: 100%;
-}
-
-
-.footer {
   display: flex;
   justify-content: space-between;
   height: 50px;

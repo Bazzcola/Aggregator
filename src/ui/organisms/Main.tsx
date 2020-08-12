@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { SearchCompany } from './ui/molecules/searchCompany/searchCompany';
-import { SearchEmployers } from './ui/molecules/searchEmployers/searchEmployers';
+import { SearchCompany } from '../molecules/searchCompany/searchCompany';
+import { SearchEmployers } from '../molecules/searchEmployers/searchEmployers';
 
 export const Main = () => {
   const [buttonLoader, setButtonLoader] = useState<boolean>(true);
