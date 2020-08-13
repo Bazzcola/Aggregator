@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
-import {
-  totalCompanies,
-  showSearch,
-  listCompanies
-} from '../../../services/api';
+import Link from 'next/link';
+import { totalCompanies, showSearch, listCompanies } from 'services/api';
 
 interface Company {
   name: string;
@@ -14,47 +11,78 @@ interface Company {
   employees: string;
   turnover: number;
   industry: string;
+  location: string;
+  mobile: boolean | null;
+  phone: boolean | null;
+  email: boolean | null;
+  website: string;
+  slug: string;
+}
+interface Result {
+  total_results: number;
 }
 
 export const SearchCompany = () => {
-  const [allCompanies, setAllCompanies] = useState<any>([]);
+  const [allCompanies, setAllCompanies] = useState<Result>();
   const [searchCompanies, setSearchCompanies] = useState<Company[]>([]);
   const [getValueName, setGetValueName] = useState<string>('');
   const [searchList, setSearchList] = useState<string>('');
   const [companyList, setCompanyList] = useState<Company[]>([]);
 
-  const years = (x) => {
+  const years = (x: number) => {
     let today = new Date();
     let dateTime = dayjs(today).format('YYYY');
     let result = parseFloat(dateTime) - x;
     return result;
   };
-  // console.log(years());
+
   useEffect(() => {
     const getData = async () => {
-      const saveData = await totalCompanies();
-      setAllCompanies(saveData);
+      try {
+        const saveData = await totalCompanies.request();
+        setAllCompanies(saveData.total_results);
+        console.log(allCompanies);
+      } catch (error) {
+        console.log(error);
+      }
     };
     getData();
+    return () => {
+      totalCompanies.cancel();
+    };
   }, []);
 
   useEffect(() => {
     const getData = async () => {
-      const saveData = await showSearch(getValueName);
-      setSearchCompanies(saveData.data);
+      try {
+        const saveData = await showSearch.request(getValueName);
+        setSearchCompanies(saveData.data);
+      } catch (error) {
+        console.log(error);
+      }
     };
     getData();
-    //cancelToken
-  }, [searchCompanies]);
+
+    return () => {
+      showSearch.cancel();
+    };
+  }, [getValueName]);
 
   useEffect(() => {
     const getData = async () => {
-      const saveData = await listCompanies(searchList);
-      setCompanyList(saveData.data);
+      try {
+        const saveData = await listCompanies.request(searchList);
+        setCompanyList(saveData.data);
+      } catch (error) {
+        console.log(error);
+      }
     };
     getData();
-    //cancelToken
-  }, [searchList]);
+
+    return () => {
+      listCompanies.cancel();
+    };
+  }, [getValueName]);
 
   const getValue = (event: {
     preventDefault: () => void;
@@ -78,6 +106,7 @@ export const SearchCompany = () => {
     setGetValueName('');
     console.log(companyList);
   };
+
   return (
     <>
       <div className="search">
@@ -90,8 +119,8 @@ export const SearchCompany = () => {
             value={getValueName}
             onChange={getValue}
             placeholder={
-              allCompanies.total_results
-                ? `Search from ${allCompanies.total_results} companies`
+              allCompanies
+                ? `Search from ${allCompanies} companies`
                 : `Loading....`
             } //typescript????
           />
@@ -108,69 +137,134 @@ export const SearchCompany = () => {
         <ul className="list_company">
           {getValueName &&
             searchCompanies.map((item: Company) => (
-              <li key={item.idno}>
-                <button className="company_btn">
-                  {item.name} &bull; {item.idno}
-                </button>
-              </li>
+              <Link
+                key={item.idno}
+                href="/company/[slug]"
+                as={`/company/${item.slug}`}
+              >
+                <li key={item.idno}>
+                  <button className="company_btn">
+                    {item.name} &bull; {item.idno}
+                  </button>
+                </li>
+              </Link>
             ))}
         </ul>
       </div>
-      <div className="search_list">
-        {searchList &&
-          companyList.map((item: Company) => (
-            <div className="search_list__item" key={item.idno}>
-              <div className="company_title">{item.name}</div>
-              <div className="list_item__first_column">
-                <p>
-                  IDNO: <span className="data_text">{item.idno}</span>
-                </p>
-                <p>
-                  Status: <span className="company_activ">ACTIV</span>
-                </p>
-                <p>
-                  Date of establishment:{' '}
-                  <span className="data_text">{item.creation_year}</span>
-                </p>
-                <p>
-                  Vărsta:{' '}
-                  <span className="data_text">
-                    {years(item.creation_year)} years
-                  </span>
-                </p>
+      {searchList ? (
+        <div className="search_list">
+          <div className="search_list_data">
+            <i className="fas fa-filter"></i> {searchList}{' '}
+            <i className="fas fa-times"></i>
+          </div>
+          <div className="search_list_results">
+            <i className="fas fa-suitcase-rolling"></i> {companyList.length} of
+            results
+          </div>
+          <div
+            className={
+              companyList.length === 0 ? 'no_result_false' : 'no_result_true'
+            }
+          >
+            <i className="fas fa-folder-open"></i>
+          </div>
+          {searchList && companyList ? (
+            companyList.map((item: Company) => (
+              <div className="search_list__item" key={item.idno}>
+                <div className="company_logo">
+                  <img
+                    src={
+                      item.website
+                        ? `https://account.globaldatabase.com/logo/${item.website.substring(
+                            7,
+                            item.website.length
+                          )}/`
+                        : '/no_img.png'
+                    }
+                    alt=""
+                  />
+                </div>
+                <div className="company_title">
+                  {item.name}
+                  {item.location ? (
+                    <p className="company_location">
+                      <img src="/pin.png" alt="geo_point" />
+                      {item.location}
+                    </p>
+                  ) : (
+                    <p></p>
+                  )}
+                </div>
+                <div className="list_item__first_column">
+                  <p>
+                    IDNO: <span className="data_text">{item.idno}</span>
+                  </p>
+                  <p>
+                    Status: <span className="company_activ">ACTIV</span>
+                  </p>
+                  <p>
+                    Date of establishment:{' '}
+                    <span className="data_text">{item.creation_year}</span>
+                  </p>
+                  <p>
+                    Vărsta:{' '}
+                    <span className="data_text">
+                      {years(item.creation_year)} years
+                    </span>
+                  </p>
+                </div>
+                <div className="list_item__second_column">
+                  <p>
+                    Nr. by the employees:{' '}
+                    <span className="data_text">
+                      {item.employees ? item.employees : '---'}
+                    </span>
+                  </p>
+                  <p>
+                    Turn over:{' '}
+                    <span className="data_text">
+                      {item.turnover ? item.turnover : '---'} MDL
+                    </span>
+                  </p>
+                  <p>
+                    Industry:{' '}
+                    <span className="data_text">
+                      {item.industry ? item.industry : '---'}
+                    </span>
+                  </p>
+                </div>
+                <div className="list_item__third_column">
+                  <p>Contacts:</p>
+                  <ul>
+                    <li className={item.mobile ? 'phone_true' : 'phone_false'}>
+                      <i className="fas fa-mobile-alt i_first"></i>Phone mobile
+                    </li>
+                    <li className={item.phone ? 'tel_true' : 'tel_false'}>
+                      <i className="fas fa-phone"></i>Phone
+                    </li>
+                    <li className={item.email ? 'email_true' : 'email_false'}>
+                      <i className="far fa-envelope"></i>Email
+                    </li>
+                    <li
+                      className={
+                        item.website ? 'website_true' : 'website_false'
+                      }
+                    >
+                      <i className="fas fa-globe"></i>Website
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div className="list_item__second_column">
-                <p>
-                  Nr. by the employees:{' '}
-                  <span className="data_text">
-                    {item.employees ? item.employees : '---'}
-                  </span>
-                </p>
-                <p>
-                  Turn over:{' '}
-                  <span className="data_text">
-                    {item.turnover ? item.turnover : '---'} MDL
-                  </span>
-                </p>
-                <p>
-                  Industry:{' '}
-                  <span className="data_text">
-                    {item.industry ? item.industry : '---'}
-                  </span>
-                </p>
-              </div>
-              <div className="list_item__third_column">
-                <p>Contacts:</p>
-                <ul>
-                  <li>Phone mobile</li>
-                  <li>Phone</li>
-                  <li>Email</li>
-                  <li>Website</li>
-                </ul>
-              </div>
+            ))
+          ) : (
+            <div className="loader_list">
+              <img src="/loader.gif" alt="" />
             </div>
-          ))}
-      </div>
+          )}
+        </div>
+      ) : (
+        <></>
+      )}
     </>
   );
 };
