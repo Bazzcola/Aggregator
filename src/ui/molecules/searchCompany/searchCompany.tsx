@@ -41,7 +41,6 @@ export const SearchCompany = () => {
       try {
         const saveData = await totalCompanies.request();
         setAllCompanies(saveData.total_results);
-        console.log(allCompanies);
       } catch (error) {
         console.log(error);
       }
@@ -106,7 +105,10 @@ export const SearchCompany = () => {
     setGetValueName('');
     console.log(companyList);
   };
-
+  const reset = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    setSearchList('');
+  };
   return (
     <>
       <div className="search">
@@ -122,7 +124,7 @@ export const SearchCompany = () => {
               allCompanies
                 ? `Search from ${allCompanies} companies`
                 : `Loading....`
-            } //typescript????
+            }
           />
         </form>
         <div className="search_review">
@@ -153,7 +155,7 @@ export const SearchCompany = () => {
       </div>
       {searchList ? (
         <div className="search_list">
-          <div className="search_list_data">
+          <div className="search_list_data" onClick={reset}>
             <i className="fas fa-filter"></i> {searchList}{' '}
             <i className="fas fa-times"></i>
           </div>
@@ -181,7 +183,7 @@ export const SearchCompany = () => {
                           )}/`
                         : '/no_img.png'
                     }
-                    alt=""
+                    alt="No_Image"
                   />
                 </div>
                 <div className="company_title">

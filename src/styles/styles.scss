@@ -1,0 +1,32 @@
+@import '../ui/organisms/main/main.scss';
+@import '../../src/ui/molecules/searchCompany/searchCompany.scss';
+@import '../../src/ui/molecules/searchEmployers/searchEmployers.scss';
+@import '../ui/organisms/company/company.scss';
+
+body {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #F5F9FC;
+  margin: 0px;
+  height: 100%;
+}
+
+a {
+  text-decoration: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+h1,
+p {
+  margin: 0px;
+  padding: 0px;
+}
+
+ul,
+li {
+  list-style: none;
+  text-decoration: none;
+  margin: 0px;
+  padding: 0px;
+}

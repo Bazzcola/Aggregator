@@ -41,8 +41,12 @@ export const listCompanies = {
       .then((response) => response.data)
 };
 
-export const profileCompany = () => {
-  return axios(
-    'https://app.informer.md/api/public/company?slug=COMPANY_SLUG'
-  ).then((response) => response.data.data);
+export const profileCompany = {
+  cancel: () => {},
+  request: (name: string | string[]) =>
+    axios
+      .get(`https://app.informer.md/api/public/company?slug=${name}`, {
+        cancelToken: new CancelToken((c) => (listCompanies.cancel = c))
+      })
+      .then((response) => response.data)
 };
