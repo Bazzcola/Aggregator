@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@types/react": "^16.9.45",
+    "@types/react": "^16.9.46",
     "@zeit/next-less": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
     "axios": "^0.19.2",
@@ -11,8 +11,11 @@
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
+    "@react-google-maps/api": "^1.9.12",
+    "@types/google-map-react": "^1.1.8",
     "@types/node": "^14.0.27",
     "dayjs": "^1.8.33",
+    "google-map-react": "^2.0.8",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
     "prettier": "^2.0.5",

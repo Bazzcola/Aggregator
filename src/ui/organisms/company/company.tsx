@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { profileCompany, totalCompanies, showSearch } from 'services/api';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 interface Company {
   name: string;
@@ -34,6 +35,17 @@ interface Profile {
     size: {
       name: string;
     };
+    contact_info: {
+      sites: string;
+      emails: boolean;
+      phones: boolean;
+      address_de_facto: {
+        additional: {
+          lat: number;
+          long: number;
+        };
+      };
+    };
   };
   history: {
     company_url: string;
@@ -47,6 +59,7 @@ export const Company = () => {
   const [getValueName, setGetValueName] = useState<string>('');
   const router = useRouter();
   const [getRout, setGetRout] = useState<string | string[]>(router.query.slug);
+  const [googleMap, setGoogleMap] = useState<Company[]>([]);
 
   useEffect(() => {
     const getData = async () => {
@@ -101,9 +114,14 @@ export const Company = () => {
         try {
           const getProfile = await profileCompany.request(getRout);
           setProfile(getProfile);
+          setGoogleMap(
+            getProfile.general_data.contact_info.address_de_facto.additional
+          );
         } catch (error) {
           console.log(error);
         }
+      } else {
+        router.replace('/');
       }
     };
     getData();
@@ -116,7 +134,7 @@ export const Company = () => {
     setGetRout(slug);
     setGetValueName('');
   };
-
+  console.log(googleMap);
   console.log(profile);
   console.log(getRout);
 
@@ -177,7 +195,7 @@ export const Company = () => {
                 <div className="company_image">
                   <img
                     src={
-                      profile.history[0].company_url
+                      profile.history && profile.history[0].company_url
                         ? `https://account.globaldatabase.com/logo/${profile.history[0].company_url.substring(
                             7,
                             profile.history[0].company_url.length
@@ -197,7 +215,9 @@ export const Company = () => {
                   </div>
                 </div>
                 <p className="company_description">
-                  {profile.general_data.branch.title}
+                  {profile.general_data.branch
+                    ? profile.general_data.branch.title
+                    : 'None...'}
                 </p>
               </div>
 
@@ -222,7 +242,11 @@ export const Company = () => {
                 </div>
                 <div className="company_dates_right">
                   <p>Staff</p>
-                  <span>{profile.general_data.size.name}</span>
+                  <span>
+                    {profile.general_data.size.name
+                      ? profile.general_data.size.name
+                      : 'None...'}
+                  </span>
                 </div>
               </div>
             </div>
@@ -232,14 +256,80 @@ export const Company = () => {
                 <div className="information_dates">
                   <div className="information_dates_leftside">
                     <p>EMAIL:</p>
-                    <p>WEBSITE:</p>
+                    <div
+                      className={
+                        profile.general_data.contact_info.emails[0]
+                          ? 'email_true'
+                          : 'email_false'
+                      }
+                    >
+                      <i className="far fa-envelope"></i> <span>Email</span>
+                    </div>
+                    <p className="website">WEBSITE:</p>
+
+                    <div
+                      className={
+                        profile.general_data.contact_info.sites[0]
+                          ? 'website_true'
+                          : 'website_false'
+                      }
+                    >
+                      <i className="fas fa-globe"></i>{' '}
+                      <span>
+                        {profile.general_data.contact_info.sites[0]
+                          ? profile.general_data.contact_info.sites[0]
+                          : 'No website...'}
+                      </span>
+                    </div>
                   </div>
                   <div className="information_dates_rightside">
                     <p>PHONE/CELL PHONE/FAX:</p>
+                    <div
+                      className={
+                        profile.general_data.contact_info.phones[0]
+                          ? 'phone_true'
+                          : 'phone_false'
+                      }
+                    >
+                      <i className="fas fa-phone"></i> <span>Phone</span>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className="company_contacts_rightside"></div>
+              <LoadScript googleMapsApiKey="AIzaSyC_0fh12-DVjt8WuY8llmg0Q7m14wRkDsg">
+                {profile.general_data.contact_info.address_de_facto
+                  .additional ? (
+                  <GoogleMap
+                    mapContainerClassName="company_contacts_rightside"
+                    center={{
+                      lat:
+                        profile.general_data.contact_info.address_de_facto
+                          .additional.lat,
+                      lng:
+                        profile.general_data.contact_info.address_de_facto
+                          .additional.long
+                    }}
+                    zoom={16}
+                  >
+                    <Marker
+                      position={{
+                        lat:
+                          profile.general_data.contact_info.address_de_facto
+                            .additional.lat,
+                        lng:
+                          profile.general_data.contact_info.address_de_facto
+                            .additional.long
+                      }}
+                      label={profile.name}
+                    ></Marker>
+                  </GoogleMap>
+                ) : (
+                  <div className="company_contacts_rightside_none">
+                    <h1>No Location...</h1>
+                    <img src="/geo.png" alt="" />
+                  </div>
+                )}
+              </LoadScript>
             </div>
             <div className="footer_profile">
               <div className="footer_wrapper_profile">
