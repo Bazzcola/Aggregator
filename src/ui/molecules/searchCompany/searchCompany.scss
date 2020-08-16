@@ -1,7 +1,6 @@
 .content {
   margin-top: 30px;
   position: relative;
-  min-height: 782px;
 }
 
 .search {
@@ -84,7 +83,7 @@
   outline: none;
   width: 100%;
   padding: 10px 25px;
-  font-size: 24px;
+  font-size: 18px;
   text-align: left;
   cursor: pointer;
 }
@@ -142,7 +141,7 @@
 .search_list {
   margin: 0 auto;
   position: relative;
-  padding: 200px 65px 0px 65px;
+  padding: 200px 65px 60px 65px;
 }
 
 .search_list__item {
@@ -380,5 +379,115 @@
   img {
     width: 90px;
 
+  }
+}
+
+
+
+@media(max-width:1090px) {
+  .search_list {
+    padding: 200px 10px 60px 10px;
+  }
+}
+
+@media(max-width:760px) {
+  .search_list__item {
+    display: block;
+  }
+
+  .list_item__first_column {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  .list_item__second_column {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  .list_item__third_column {
+    width: 90%;
+    margin: 0 auto;
+  }
+}
+
+@media(max-width:690px) {
+  .search_review {
+    font-size: 18px;
+    justify-content: center;
+  }
+
+  .search_review .button {
+    color: #646567;
+    font-size: 18px;
+    border-radius: 30px;
+    padding: 10px;
+    cursor: pointer;
+    outline: none;
+    background: none;
+    border: 1px grey solid;
+    box-sizing: border-box;
+    height: 40px;
+    width: auto;
+    margin-left: 10px;
+  }
+}
+
+@media(max-width:560px) {
+  .company_btn {
+    overflow: hidden;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .search_list {
+    padding: 200px 10px 120px 10px;
+  }
+
+  .search_list_data {
+    left: 10px;
+  }
+
+  .search {
+    padding: 0px 10px;
+  }
+
+  input {
+    padding: 0px 25px 0px 25px !important;
+  }
+}
+
+.redirect_page {
+  cursor: pointer;
+}
+
+@media(max-width:460px) {
+  input {
+    font-size: 14px !important;
+    font-weight: 600;
+  }
+
+  input::placeholder {
+    font-size: 14px !important;
+    font-weight: 600;
+  }
+
+  .searchInput {
+    background-size: 17px 17px;
+    background-position: top 20px right 20px;
+  }
+
+  .search_review .button {
+    font-size: 14px;
+    height: 39px;
+  }
+
+  .search_review {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .footer_wrapper {
+    padding: 0px;
   }
 }

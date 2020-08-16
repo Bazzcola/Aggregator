@@ -1,5 +1,7 @@
 .container {
     margin: 0 auto;
+    position: relative;
+    min-height: 100vh;
 }
 
 .header {
@@ -28,12 +30,13 @@ input::placeholder {
 }
 
 .footer {
-    bottom: 0px;
-    left: 0px;
     display: flex;
     justify-content: space-between;
     height: 50px;
     width: 100%;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
 
 }
 
@@ -68,4 +71,67 @@ input::placeholder {
         color: #646567;
         font-size: 20px;
     }
+}
+
+.back_to_top {
+    position: fixed;
+    bottom: 30px;
+    right: 20px;
+    z-index: 9999;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border: 3px grey solid;
+    cursor: pointer;
+    border-radius: 2px;
+    display: block;
+
+    i {
+        color: grey;
+    }
+}
+
+.back_to_top:hover {
+    border: 3px #477DBD solid;
+
+    i {
+        color: #477DBD;
+    }
+}
+
+@media(max-width:690px) {
+    .footer_leftside a {
+        font-size: 14px;
+    }
+
+    .footer_rightside span {
+        font-size: 14px;
+    }
+}
+
+@media(max-width:560px) {
+    .footer_wrapper {
+        display: block;
+        border-top: 1px solid #cdd5e1;
+    }
+
+    .footer {
+        height: auto;
+    }
+
+    .footer_leftside {
+        padding: 30px 0px;
+        justify-content: center;
+    }
+
+    .footer_rightside {
+        padding: 15px 0px;
+        text-align: center;
+    }
+
+    .list_company li {
+        overflow: hidden;
+    }
+
 }

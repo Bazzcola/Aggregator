@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { SearchCompany } from 'ui/molecules/searchCompany/searchCompany';
-import { SearchEmployers } from 'ui/molecules/searchEmployers/searchEmployers';
 
 export const Main = () => {
-  const [buttonLoader, setButtonLoader] = useState<boolean>(true);
+  const trackScroll = () => {
+    const goTopBtn = document.querySelector('.back_to_top');
+    const backToTop = () => {
+      if (window.pageYOffset > 0) {
+        window.scrollBy(0, -80);
+        setTimeout(backToTop, 0);
+      }
+    };
+    window.addEventListener('scroll', trackScroll);
+    goTopBtn.addEventListener('click', backToTop);
+  };
 
   return (
     <>
       <Head>
+        <link rel="shortcut icon" href="/pin.png" />
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
@@ -23,7 +33,7 @@ export const Main = () => {
           </div>
         </div>
         <div className="content">
-          {buttonLoader ? <SearchCompany /> : <SearchEmployers />}
+          <SearchCompany />
         </div>
         <div className="footer">
           <div className="footer_wrapper">
@@ -45,6 +55,9 @@ export const Main = () => {
               <span>© 2020 informer.md</span>
             </div>
           </div>
+        </div>
+        <div className="back_to_top" onClick={trackScroll}>
+          <i className="fas fa-arrow-up"></i>
         </div>
       </div>
     </>

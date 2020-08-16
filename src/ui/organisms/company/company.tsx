@@ -143,6 +143,7 @@ export const Company = () => {
       {profile ? (
         <>
           <Head>
+            <link rel="shortcut icon" href="/pin.png" />
             <link
               rel="stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
@@ -355,7 +356,9 @@ export const Company = () => {
           </div>
         </>
       ) : (
-        <h1>loader</h1>
+        <div className="loader_list">
+          <img src="/loader.gif" alt="" />
+        </div>
       )}
     </>
   );

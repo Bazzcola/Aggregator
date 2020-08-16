@@ -103,7 +103,6 @@ export const SearchCompany = () => {
     e.preventDefault();
     setSearchList(getValueName);
     setGetValueName('');
-    console.log(companyList);
   };
   const reset = (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -187,7 +186,13 @@ export const SearchCompany = () => {
                   />
                 </div>
                 <div className="company_title">
-                  {item.name}
+                  <Link
+                    key={item.idno}
+                    href="/company/[slug]"
+                    as={`/company/${item.slug}`}
+                  >
+                    <p className="redirect_page">{item.name}</p>
+                  </Link>
                   {item.location ? (
                     <p className="company_location">
                       <img src="/pin.png" alt="geo_point" />
