@@ -134,9 +134,6 @@ export const Company = () => {
     setGetRout(slug);
     setGetValueName('');
   };
-  console.log(googleMap);
-  console.log(profile);
-  console.log(getRout);
 
   return (
     <>
