@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { profileCompany, totalCompanies, showSearch } from 'services/api';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { key } from '../../../../key/key';
 
 interface Company {
   name: string;
@@ -294,7 +295,7 @@ export const Company = () => {
                   </div>
                 </div>
               </div>
-              <LoadScript googleMapsApiKey="AIzaSyC_0fh12-DVjt8WuY8llmg0Q7m14wRkDsg">
+              <LoadScript googleMapsApiKey={key}>
                 {profile.general_data.contact_info.address_de_facto
                   .additional ? (
                   <GoogleMap
