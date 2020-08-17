@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { profileCompany, totalCompanies, showSearch } from 'services/api';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { key } from '../../../../key/key';
 
 interface Company {
   name: string;
@@ -60,7 +59,6 @@ export const Company = () => {
   const [getValueName, setGetValueName] = useState<string>('');
   const router = useRouter();
   const [getRout, setGetRout] = useState<string | string[]>(router.query.slug);
-  const [googleMap, setGoogleMap] = useState<Company[]>([]);
 
   useEffect(() => {
     const getData = async () => {
@@ -115,9 +113,6 @@ export const Company = () => {
         try {
           const getProfile = await profileCompany.request(getRout);
           setProfile(getProfile);
-          setGoogleMap(
-            getProfile.general_data.contact_info.address_de_facto.additional
-          );
         } catch (error) {
           console.log(error);
         }
@@ -136,6 +131,7 @@ export const Company = () => {
     setGetValueName('');
   };
 
+  console.log(process.env.customKey);
   return (
     <>
       {profile ? (
@@ -295,7 +291,7 @@ export const Company = () => {
                   </div>
                 </div>
               </div>
-              <LoadScript googleMapsApiKey={key}>
+              <LoadScript googleMapsApiKey={process.env.customKey}>
                 {profile.general_data.contact_info.address_de_facto
                   .additional ? (
                   <GoogleMap

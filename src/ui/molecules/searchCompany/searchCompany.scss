@@ -137,7 +137,6 @@
     margin-top: 10px;
   }
 }
-
 .search_list {
   margin: 0 auto;
   position: relative;
@@ -256,8 +255,6 @@
   i {
     color: #063467 !important;
   }
-
-
 }
 
 .phone_true:hover {
@@ -274,7 +271,6 @@
   i {
     color: #063467 !important;
   }
-
 }
 
 .tel_true:hover {
@@ -291,8 +287,6 @@
   i {
     color: #063467 !important;
   }
-
-
 }
 
 .email_true:hover {
@@ -309,7 +303,6 @@
   i {
     color: #063467 !important;
   }
-
 }
 
 .website_true:hover {
@@ -319,7 +312,6 @@
 .website_false {
   cursor: not-allowed;
 }
-
 .search_list_results {
   font-size: 22px;
   font-weight: 600;
@@ -352,7 +344,7 @@
   color: rgb(187, 187, 187);
   font-size: 80px;
   position: absolute;
-  top: 200%;
+  top: 150%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -366,7 +358,6 @@
   text-align: center;
 
   img {
-
     margin-top: 200px;
   }
 }
@@ -378,19 +369,16 @@
 
   img {
     width: 90px;
-
   }
 }
 
-
-
-@media(max-width:1090px) {
+@media (max-width: 1090px) {
   .search_list {
     padding: 200px 10px 60px 10px;
   }
 }
 
-@media(max-width:760px) {
+@media (max-width: 760px) {
   .search_list__item {
     display: block;
   }
@@ -411,7 +399,7 @@
   }
 }
 
-@media(max-width:690px) {
+@media (max-width: 690px) {
   .search_review {
     font-size: 18px;
     justify-content: center;
@@ -433,7 +421,7 @@
   }
 }
 
-@media(max-width:560px) {
+@media (max-width: 560px) {
   .company_btn {
     overflow: hidden;
     font-size: 12px;
@@ -461,7 +449,7 @@
   cursor: pointer;
 }
 
-@media(max-width:460px) {
+@media (max-width: 460px) {
   input {
     font-size: 14px !important;
     font-weight: 600;

@@ -1,0 +1,40 @@
+.pagination_box {
+    margin-bottom: 20px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+
+    .page_item {
+        padding: 5px 10px;
+        border: 2px grey solid;
+        margin-right: 5px;
+        border-radius: 2px;
+    }
+
+    .page_item:hover {
+        border: 2px #487ebe solid;
+    }
+}
+
+.page_link {
+    color: black;
+    font-weight: 600;
+}
+
+.page_link:hover {
+    color: #487ebe;
+}
+
+.page_link_active {
+    color: #487ebe;
+    font-weight: 600;
+}
+
+@media(max-width:460px) {
+    .pagination .page_item {
+        padding: 0px 5px;
+        font-size: 14px;
+    }
+}

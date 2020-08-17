@@ -1,18 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import { SearchCompany } from 'ui/molecules/searchCompany/searchCompany';
 
 export const Main = () => {
   const trackScroll = () => {
-    const goTopBtn = document.querySelector('.back_to_top');
-    const backToTop = () => {
-      if (window.pageYOffset > 0) {
-        window.scrollBy(0, -80);
-        setTimeout(backToTop, 0);
-      }
-    };
-    window.addEventListener('scroll', trackScroll);
-    goTopBtn.addEventListener('click', backToTop);
+    try {
+      const goTopBtn = document.querySelector('.back_to_top');
+      const backToTop = () => {
+        if (window.pageYOffset > 0) {
+          window.scrollBy(0, -80);
+          setTimeout(backToTop, 0);
+        }
+      };
+      window.addEventListener('scroll', trackScroll);
+      goTopBtn.addEventListener('click', backToTop);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

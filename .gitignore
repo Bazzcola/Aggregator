@@ -1,3 +1,4 @@
 node_modules
 .next
-key
+.env
+next.config.js

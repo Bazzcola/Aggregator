@@ -1,3 +1,9 @@
+## ENV
+
+Create a file .env
+
+MAP_KEY = your_url
+
 # Companies Aggregator App
 
 You need to create an application that allows to user search companies and show companies information.

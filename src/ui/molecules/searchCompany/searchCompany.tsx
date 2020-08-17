@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import dayjs from 'dayjs';
 import Link from 'next/link';
 import { totalCompanies, showSearch, listCompanies } from 'services/api';
+import { List } from 'ui/atoms/List/List';
+import { Pagination } from 'ui/atoms/Pagination/pagination';
 
 interface Company {
   name: string;
@@ -28,13 +29,9 @@ export const SearchCompany = () => {
   const [getValueName, setGetValueName] = useState<string>('');
   const [searchList, setSearchList] = useState<string>('');
   const [companyList, setCompanyList] = useState<Company[]>([]);
-
-  const years = (x: number) => {
-    let today = new Date();
-    let dateTime = dayjs(today).format('YYYY');
-    let result = parseFloat(dateTime) - x;
-    return result;
-  };
+  const [loading, setLoading] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [postsPerPage] = useState<number>(10);
 
   useEffect(() => {
     const getData = async () => {
@@ -70,8 +67,10 @@ export const SearchCompany = () => {
   useEffect(() => {
     const getData = async () => {
       try {
+        setLoading(true);
         const saveData = await listCompanies.request(searchList);
         setCompanyList(saveData.data);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -108,6 +107,15 @@ export const SearchCompany = () => {
     e.preventDefault();
     setSearchList('');
   };
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = companyList.slice(indexOfFirstPost, indexOfLastPost);
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <>
       <div className="search">
@@ -170,99 +178,15 @@ export const SearchCompany = () => {
             <i className="fas fa-folder-open"></i>
           </div>
           {searchList && companyList ? (
-            companyList.map((item: Company) => (
-              <div className="search_list__item" key={item.idno}>
-                <div className="company_logo">
-                  <img
-                    src={
-                      item.website
-                        ? `https://account.globaldatabase.com/logo/${item.website.substring(
-                            7,
-                            item.website.length
-                          )}/`
-                        : '/no_img.png'
-                    }
-                    alt="No_Image"
-                  />
-                </div>
-                <div className="company_title">
-                  <Link
-                    key={item.idno}
-                    href="/company/[slug]"
-                    as={`/company/${item.slug}`}
-                  >
-                    <p className="redirect_page">{item.name}</p>
-                  </Link>
-                  {item.location ? (
-                    <p className="company_location">
-                      <img src="/pin.png" alt="geo_point" />
-                      {item.location}
-                    </p>
-                  ) : (
-                    <p></p>
-                  )}
-                </div>
-                <div className="list_item__first_column">
-                  <p>
-                    IDNO: <span className="data_text">{item.idno}</span>
-                  </p>
-                  <p>
-                    Status: <span className="company_activ">ACTIV</span>
-                  </p>
-                  <p>
-                    Date of establishment:{' '}
-                    <span className="data_text">{item.creation_year}</span>
-                  </p>
-                  <p>
-                    Vărsta:{' '}
-                    <span className="data_text">
-                      {years(item.creation_year)} years
-                    </span>
-                  </p>
-                </div>
-                <div className="list_item__second_column">
-                  <p>
-                    Nr. by the employees:{' '}
-                    <span className="data_text">
-                      {item.employees ? item.employees : '---'}
-                    </span>
-                  </p>
-                  <p>
-                    Turn over:{' '}
-                    <span className="data_text">
-                      {item.turnover ? item.turnover : '---'} MDL
-                    </span>
-                  </p>
-                  <p>
-                    Industry:{' '}
-                    <span className="data_text">
-                      {item.industry ? item.industry : '---'}
-                    </span>
-                  </p>
-                </div>
-                <div className="list_item__third_column">
-                  <p>Contacts:</p>
-                  <ul>
-                    <li className={item.mobile ? 'phone_true' : 'phone_false'}>
-                      <i className="fas fa-mobile-alt i_first"></i>Phone mobile
-                    </li>
-                    <li className={item.phone ? 'tel_true' : 'tel_false'}>
-                      <i className="fas fa-phone"></i>Phone
-                    </li>
-                    <li className={item.email ? 'email_true' : 'email_false'}>
-                      <i className="far fa-envelope"></i>Email
-                    </li>
-                    <li
-                      className={
-                        item.website ? 'website_true' : 'website_false'
-                      }
-                    >
-                      <i className="fas fa-globe"></i>Website
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            ))
+            <>
+              <List companyList={currentPosts} loading={loading} />
+              <Pagination
+                postsPerPage={postsPerPage}
+                totalPosts={companyList.length}
+                paginate={paginate}
+                loading={loading}
+              />
+            </>
           ) : (
             <div className="loader_list">
               <img src="/loader.gif" alt="" />
