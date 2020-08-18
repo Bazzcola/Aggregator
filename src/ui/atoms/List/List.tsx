@@ -1,6 +1,8 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import Link from 'next/link';
+import { Img } from 'react-image';
+import { Loader } from '../loader/loader';
 
 export const List = ({ companyList, loading }) => {
   const years = (x: number) => {
@@ -9,7 +11,6 @@ export const List = ({ companyList, loading }) => {
     let result = parseFloat(dateTime) - x;
     return result;
   };
-
   if (loading) {
     return <></>;
   }
@@ -19,16 +20,16 @@ export const List = ({ companyList, loading }) => {
       {companyList.map((item) => (
         <div className="search_list__item" key={item.idno}>
           <div className="company_logo">
-            <img
+            <Img
               src={
                 item.website
                   ? `https://account.globaldatabase.com/logo/${item.website.substring(
                       7,
                       item.website.length
                     )}/`
-                  : '/no_img.png'
+                  : 'https://sciences.ucf.edu/psychology/wp-content/uploads/sites/63/2019/09/No-Image-Available.png'
               }
-              alt="/no_img.png"
+              loader={Loader()}
             />
           </div>
           <div className="company_title">

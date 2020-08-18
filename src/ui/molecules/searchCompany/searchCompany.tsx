@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { totalCompanies, showSearch, listCompanies } from 'services/api';
 import { List } from 'ui/atoms/List/List';
 import { Pagination } from 'ui/atoms/Pagination/pagination';
-
+import { useRouter } from 'next/router';
 interface Company {
   name: string;
   idno: string;
@@ -32,7 +32,7 @@ export const SearchCompany = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [postsPerPage] = useState<number>(10);
-
+  const router = useRouter();
   useEffect(() => {
     const getData = async () => {
       try {
@@ -102,6 +102,7 @@ export const SearchCompany = () => {
     e.preventDefault();
     setSearchList(getValueName);
     setGetValueName('');
+    router.replace('/');
   };
   const reset = (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -112,7 +113,7 @@ export const SearchCompany = () => {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = companyList.slice(indexOfFirstPost, indexOfLastPost);
 
-  const paginate = (pageNumber) => {
+  const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
@@ -177,7 +178,7 @@ export const SearchCompany = () => {
           >
             <i className="fas fa-folder-open"></i>
           </div>
-          {searchList && companyList ? (
+          {searchList ? (
             <>
               <List companyList={currentPosts} loading={loading} />
               <Pagination
@@ -188,9 +189,10 @@ export const SearchCompany = () => {
               />
             </>
           ) : (
-            <div className="loader_list">
-              <img src="/loader.gif" alt="" />
-            </div>
+            // <div className="loader_list">
+            //   <img src="/loader.gif" alt="" />
+            // </div>
+            <></>
           )}
         </div>
       ) : (

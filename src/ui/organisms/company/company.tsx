@@ -51,8 +51,13 @@ interface Profile {
     company_url: string;
   };
 }
+interface context {
+  query: {
+    slug: string;
+  };
+}
 
-export const Company = () => {
+export const Company = ({ propsData }) => {
   const [profile, setProfile] = useState<Profile>();
   const [allCompanies, setAllCompanies] = useState<number>();
   const [searchCompanies, setSearchCompanies] = useState<Company[]>([]);
@@ -116,15 +121,13 @@ export const Company = () => {
         } catch (error) {
           console.log(error);
         }
-      } else {
-        router.replace('/');
       }
     };
     getData();
     return () => {
       profileCompany.cancel();
     };
-  }, [getRout]);
+  }, [router.query]);
 
   const saveSlug = (slug: string) => {
     setGetRout(slug);
@@ -293,7 +296,11 @@ export const Company = () => {
               </div>
               <LoadScript googleMapsApiKey={process.env.customKey}>
                 {profile.general_data.contact_info.address_de_facto
-                  .additional ? (
+                  .additional &&
+                profile.general_data.contact_info.address_de_facto.additional
+                  .lat &&
+                profile.general_data.contact_info.address_de_facto.additional
+                  .long ? (
                   <GoogleMap
                     mapContainerClassName="company_contacts_rightside"
                     center={{
@@ -356,4 +363,22 @@ export const Company = () => {
       )}
     </>
   );
+};
+
+Company.getInitialProps = async (
+  ctx: context
+): Promise<{
+  props: {
+    propsData: Profile[];
+  };
+}> => {
+  const x = ctx.query.slug;
+  const data = await profileCompany.request(x);
+  const propsData = data;
+
+  return {
+    props: {
+      propsData
+    }
+  };
 };

@@ -137,6 +137,7 @@
     margin-top: 10px;
   }
 }
+
 .search_list {
   margin: 0 auto;
   position: relative;
@@ -312,9 +313,20 @@
 .website_false {
   cursor: not-allowed;
 }
+
 .search_list_results {
   font-size: 22px;
   font-weight: 600;
+}
+
+.loader_list {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  img {
+    width: 100px;
+  }
 }
 
 .search_list_data {

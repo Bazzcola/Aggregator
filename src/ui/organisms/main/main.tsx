@@ -1,8 +1,31 @@
 import React from 'react';
 import Head from 'next/head';
 import { SearchCompany } from 'ui/molecules/searchCompany/searchCompany';
+import { totalCompanies } from 'services/api';
 
-export const Main = () => {
+export interface Company {
+  name: string;
+  idno: string;
+  pages: number;
+  creation_year: number;
+  employees: string;
+  turnover: number;
+  industry: string;
+  location: string;
+  mobile: boolean | null;
+  phone: boolean | null;
+  email: boolean | null;
+  website: string;
+  slug: string;
+}
+
+interface Promise {
+  props: {
+    propsData: Company[];
+  };
+}
+
+export const Main = ({ propsData }) => {
   const trackScroll = () => {
     try {
       const goTopBtn = document.querySelector('.back_to_top');
@@ -66,4 +89,15 @@ export const Main = () => {
       </div>
     </>
   );
+};
+
+Main.getInitialProps = async (): Promise => {
+  const data = await totalCompanies.request();
+  const propsData = data.data;
+
+  return {
+    props: {
+      propsData
+    }
+  };
 };
