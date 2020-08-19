@@ -4,7 +4,8 @@ import { totalCompanies, showSearch, listCompanies } from 'services/api';
 import { List } from 'ui/atoms/List/List';
 import { Pagination } from 'ui/atoms/Pagination/pagination';
 import { useRouter } from 'next/router';
-interface Company {
+
+export interface Company {
   name: string;
   idno: string;
   pages: number;
@@ -33,6 +34,7 @@ export const SearchCompany = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [postsPerPage] = useState<number>(10);
   const router = useRouter();
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -80,7 +82,7 @@ export const SearchCompany = () => {
     return () => {
       listCompanies.cancel();
     };
-  }, [getValueName]);
+  }, [searchList]);
 
   const getValue = (event: {
     preventDefault: () => void;
@@ -189,10 +191,9 @@ export const SearchCompany = () => {
               />
             </>
           ) : (
-            // <div className="loader_list">
-            //   <img src="/loader.gif" alt="" />
-            // </div>
-            <></>
+            <div className="loader_list">
+              <img src="/loader.gif" alt="" />
+            </div>
           )}
         </div>
       ) : (

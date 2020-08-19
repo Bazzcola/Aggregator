@@ -1,8 +1,16 @@
 ## ENV
 
-Create a file .env
+Create a file .env.local
 
 MAP_KEY = your_url
+
+Create a file next.config.js or create in this file :
+
+module.exports = {
+env: {
+MAP_KEY: process.env.MAP_KEY,
+},
+};
 
 # Companies Aggregator App
 

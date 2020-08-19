@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import { Img } from 'react-image';
 import { useRouter } from 'next/router';
 import { profileCompany, totalCompanies, showSearch } from 'services/api';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { Loader } from 'ui/atoms/loader/loader';
 
 interface Company {
   name: string;
@@ -64,6 +66,7 @@ export const Company = ({ propsData }) => {
   const [getValueName, setGetValueName] = useState<string>('');
   const router = useRouter();
   const [getRout, setGetRout] = useState<string | string[]>(router.query.slug);
+  const [loader, setLoader] = useState<boolean>(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -116,8 +119,10 @@ export const Company = ({ propsData }) => {
     const getData = async () => {
       if (router.query.slug) {
         try {
+          setLoader(true);
           const getProfile = await profileCompany.request(getRout);
           setProfile(getProfile);
+          setLoader(false);
         } catch (error) {
           console.log(error);
         }
@@ -134,7 +139,6 @@ export const Company = ({ propsData }) => {
     setGetValueName('');
   };
 
-  console.log(process.env.customKey);
   return (
     <>
       {profile ? (
@@ -188,151 +192,169 @@ export const Company = ({ propsData }) => {
                 </ul>
               </div>
             </div>
-            <div className="company_head">
-              <div className="head_leftside">
-                <div className="company_image">
-                  <img
-                    src={
-                      profile.history && profile.history[0].company_url
-                        ? `https://account.globaldatabase.com/logo/${profile.history[0].company_url.substring(
-                            7,
-                            profile.history[0].company_url.length
-                          )}/`
-                        : '/no_img.png'
-                    }
-                    alt=""
-                  />
-                </div>
-                <div className="comapny_desc">
-                  <div className="profile_name">
-                    <p>{profile.name}</p>
-                  </div>
-
-                  <div className="company_status">
-                    <p>{profile.status.keyword}</p>
-                  </div>
-                </div>
-                <p className="company_description">
-                  {profile.general_data.branch
-                    ? profile.general_data.branch.title
-                    : 'None...'}
-                </p>
-              </div>
-
-              <ul className="low_btns">
-                <li>General dates</li>
-                <li>Personal</li>
-                <li>Subdivisions</li>
-                <li>Economic Data</li>
-                <li>Publications</li>
-                <li>Legal data</li>
-              </ul>
-            </div>
-            <div className="company_dates">
-              <div className="company_dates_wrapper">
-                <div className="company_dates_leftside">
-                  <p>IDNO</p>
-                  <span>{profile.general_data.idno}</span>
-                </div>
-                <div className="company_dates_midle">
-                  <p>Registration year</p>
-                  <span>{profile.general_data.creation_year}</span>
-                </div>
-                <div className="company_dates_right">
-                  <p>Staff</p>
-                  <span>
-                    {profile.general_data.size.name
-                      ? profile.general_data.size.name
-                      : 'None...'}
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="company_contacts">
-              <div className="company_contacts_leftside">
-                <h1>Contact information</h1>
-                <div className="information_dates">
-                  <div className="information_dates_leftside">
-                    <p>EMAIL:</p>
-                    <div
-                      className={
-                        profile.general_data.contact_info.emails[0]
-                          ? 'email_true'
-                          : 'email_false'
-                      }
-                    >
-                      <i className="far fa-envelope"></i> <span>Email</span>
+            {!loader ? (
+              <>
+                <div className="company_head">
+                  <div className="head_leftside">
+                    <div className="company_image">
+                      <Img
+                        src={[
+                          profile.history[0].company_url
+                            ? `https://account.globaldatabase.com/logo/${profile.history[0].company_url.substring(
+                                7,
+                                profile.history[0].company_url.length
+                              )}/`
+                            : 'https://sciences.ucf.edu/psychology/wp-content/uploads/sites/63/2019/09/No-Image-Available.png',
+                          'https://sciences.ucf.edu/psychology/wp-content/uploads/sites/63/2019/09/No-Image-Available.png'
+                        ]}
+                        loader={Loader()}
+                      />
                     </div>
-                    <p className="website">WEBSITE:</p>
+                    <div className="comapny_desc">
+                      <div className="profile_name">
+                        <p>{profile.name}</p>
+                      </div>
 
-                    <div
-                      className={
-                        profile.general_data.contact_info.sites[0]
-                          ? 'website_true'
-                          : 'website_false'
-                      }
-                    >
-                      <i className="fas fa-globe"></i>{' '}
+                      <div className="company_status">
+                        <p>{profile.status.keyword}</p>
+                      </div>
+                    </div>
+                    <p className="company_description">
+                      {profile.general_data.branch
+                        ? profile.general_data.branch.title
+                        : 'None...'}
+                    </p>
+                  </div>
+                  <ul className="low_btns">
+                    <li>General dates</li>
+                    <li>Personal</li>
+                    <li>Subdivisions</li>
+                    <li>Economic Data</li>
+                    <li>Publications</li>
+                    <li>Legal data</li>
+                  </ul>
+                </div>
+                <div className="company_dates">
+                  <div className="company_dates_wrapper">
+                    <div className="company_dates_leftside">
+                      <p>IDNO</p>
+                      <span>{profile.general_data.idno}</span>
+                    </div>
+                    <div className="company_dates_midle">
+                      <p>Registration year</p>
+                      <span>{profile.general_data.creation_year}</span>
+                    </div>
+                    <div className="company_dates_right">
+                      <p>Staff</p>
                       <span>
-                        {profile.general_data.contact_info.sites[0]
-                          ? profile.general_data.contact_info.sites[0]
-                          : 'No website...'}
+                        {profile.general_data.size.name
+                          ? profile.general_data.size.name
+                          : 'None...'}
                       </span>
                     </div>
                   </div>
-                  <div className="information_dates_rightside">
-                    <p>PHONE/CELL PHONE/FAX:</p>
-                    <div
-                      className={
-                        profile.general_data.contact_info.phones[0]
-                          ? 'phone_true'
-                          : 'phone_false'
-                      }
-                    >
-                      <i className="fas fa-phone"></i> <span>Phone</span>
+                </div>
+                <div className="company_contacts">
+                  <div className="company_contacts_leftside">
+                    <h1>Contact information</h1>
+                    <div className="information_dates">
+                      <div className="information_dates_leftside">
+                        <p>EMAIL:</p>
+                        <div
+                          className={
+                            profile.general_data.contact_info.emails[0]
+                              ? 'email_true'
+                              : 'email_false'
+                          }
+                        >
+                          <i className="far fa-envelope"></i> <span>Email</span>
+                        </div>
+                        <p className="website">WEBSITE:</p>
+
+                        <div
+                          className={
+                            profile.general_data.contact_info.sites[0]
+                              ? 'website_true'
+                              : 'website_false'
+                          }
+                        >
+                          <i className="fas fa-globe"></i>{' '}
+                          <span>
+                            {profile.general_data.contact_info.sites[0]
+                              ? profile.general_data.contact_info.sites[0]
+                              : 'No website...'}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="information_dates_rightside">
+                        <p>PHONE/CELL PHONE/FAX:</p>
+                        <div
+                          className={
+                            profile.general_data.contact_info.phones[0]
+                              ? 'phone_true'
+                              : 'phone_false'
+                          }
+                        >
+                          <i className="fas fa-phone"></i> <span>Phone</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
+                  {profile.general_data.contact_info.address_de_facto
+                    .additional &&
+                  profile.general_data.contact_info.address_de_facto.additional
+                    .lat &&
+                  profile.general_data.contact_info.address_de_facto.additional
+                    .long ? (
+                    <LoadScript googleMapsApiKey={process.env.MAP_KEY}>
+                      {profile.general_data.contact_info.address_de_facto
+                        .additional &&
+                      profile.general_data.contact_info.address_de_facto
+                        .additional.lat &&
+                      profile.general_data.contact_info.address_de_facto
+                        .additional.long ? (
+                        <GoogleMap
+                          mapContainerClassName="company_contacts_rightside"
+                          center={{
+                            lat:
+                              profile.general_data.contact_info.address_de_facto
+                                .additional.lat,
+                            lng:
+                              profile.general_data.contact_info.address_de_facto
+                                .additional.long
+                          }}
+                          zoom={16}
+                        >
+                          <Marker
+                            position={{
+                              lat:
+                                profile.general_data.contact_info
+                                  .address_de_facto.additional.lat,
+                              lng:
+                                profile.general_data.contact_info
+                                  .address_de_facto.additional.long
+                            }}
+                            label={profile.name}
+                          ></Marker>
+                        </GoogleMap>
+                      ) : (
+                        <div className="company_contacts_rightside_none">
+                          <h1>No Location...</h1>
+                          <img src="/geo.png" alt="" />
+                        </div>
+                      )}
+                    </LoadScript>
+                  ) : (
+                    <div className="company_contacts_rightside_none">
+                      <h1>No Location...</h1>
+                      <img src="/geo.png" alt="" />
+                    </div>
+                  )}
                 </div>
-              </div>
-              <LoadScript googleMapsApiKey={process.env.customKey}>
-                {profile.general_data.contact_info.address_de_facto
-                  .additional &&
-                profile.general_data.contact_info.address_de_facto.additional
-                  .lat &&
-                profile.general_data.contact_info.address_de_facto.additional
-                  .long ? (
-                  <GoogleMap
-                    mapContainerClassName="company_contacts_rightside"
-                    center={{
-                      lat:
-                        profile.general_data.contact_info.address_de_facto
-                          .additional.lat,
-                      lng:
-                        profile.general_data.contact_info.address_de_facto
-                          .additional.long
-                    }}
-                    zoom={16}
-                  >
-                    <Marker
-                      position={{
-                        lat:
-                          profile.general_data.contact_info.address_de_facto
-                            .additional.lat,
-                        lng:
-                          profile.general_data.contact_info.address_de_facto
-                            .additional.long
-                      }}
-                      label={profile.name}
-                    ></Marker>
-                  </GoogleMap>
-                ) : (
-                  <div className="company_contacts_rightside_none">
-                    <h1>No Location...</h1>
-                    <img src="/geo.png" alt="" />
-                  </div>
-                )}
-              </LoadScript>
-            </div>
+              </>
+            ) : (
+              <img src="/loader.gif" className="profile_main_loader" alt="" />
+            )}
             <div className="footer_profile">
               <div className="footer_wrapper_profile">
                 <ul className="footer_leftside_profile">

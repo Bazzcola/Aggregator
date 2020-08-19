@@ -1,8 +1,8 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import Link from 'next/link';
-import { Img } from 'react-image';
-import { Loader } from '../loader/loader';
+import { Loader } from 'ui/atoms/loader/loader';
+import { Company } from 'ui/molecules/searchCompany/searchCompany';
 
 export const List = ({ companyList, loading }) => {
   const years = (x: number) => {
@@ -17,20 +17,24 @@ export const List = ({ companyList, loading }) => {
 
   return (
     <>
-      {companyList.map((item) => (
+      {companyList.map((item: Company) => (
         <div className="search_list__item" key={item.idno}>
           <div className="company_logo">
-            <Img
-              src={
-                item.website
-                  ? `https://account.globaldatabase.com/logo/${item.website.substring(
-                      7,
-                      item.website.length
-                    )}/`
-                  : 'https://sciences.ucf.edu/psychology/wp-content/uploads/sites/63/2019/09/No-Image-Available.png'
-              }
-              loader={Loader()}
-            />
+            {companyList ? (
+              <img
+                src={
+                  item.website
+                    ? `https://account.globaldatabase.com/logo/${item.website.substring(
+                        7,
+                        item.website.length
+                      )}/`
+                    : 'https://sciences.ucf.edu/psychology/wp-content/uploads/sites/63/2019/09/No-Image-Available.png'
+                }
+                alt=""
+              />
+            ) : (
+              <Loader />
+            )}
           </div>
           <div className="company_title">
             <Link

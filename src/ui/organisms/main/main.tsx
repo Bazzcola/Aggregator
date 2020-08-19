@@ -26,22 +26,6 @@ interface Promise {
 }
 
 export const Main = ({ propsData }) => {
-  const trackScroll = () => {
-    try {
-      const goTopBtn = document.querySelector('.back_to_top');
-      const backToTop = () => {
-        if (window.pageYOffset > 0) {
-          window.scrollBy(0, -80);
-          setTimeout(backToTop, 0);
-        }
-      };
-      window.addEventListener('scroll', trackScroll);
-      goTopBtn.addEventListener('click', backToTop);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <>
       <Head>
@@ -82,9 +66,6 @@ export const Main = ({ propsData }) => {
               <span>© 2020 informer.md</span>
             </div>
           </div>
-        </div>
-        <div className="back_to_top" onClick={trackScroll}>
-          <i className="fas fa-arrow-up"></i>
         </div>
       </div>
     </>

@@ -8,13 +8,13 @@ export const Pagination = ({ postsPerPage, totalPosts, paginate, loading }) => {
   for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
     pageNumbers.push(i);
   }
-  // if (loading) {
-  //   return (
-  //     <div className="loader_list">
-  //       <img src="/loader.gif" alt="" />
-  //     </div>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <div className="loader_list">
+        <img src="/loader.gif" alt="" />
+      </div>
+    );
+  }
   return (
     <div className="pagination_box">
       <ul className="pagination">
