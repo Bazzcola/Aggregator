@@ -2,7 +2,7 @@
 
 Create a file .env.local
 
-MAP_KEY = your_url
+MAP_KEY = your api key
 
 Create a file next.config.js or create in this file :
 
