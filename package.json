@@ -1,4 +1,14 @@
 {
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lerna:lint:js": "lerna run lint:js:fix",
+    "format": "npx prettier --write \"src/**/*.{js,jsx,ts,tsx,json,scss}\""
+  },
   "dependencies": {
     "@types/react": "^16.9.46",
     "@zeit/next-less": "^1.0.1",
